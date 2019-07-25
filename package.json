@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@anarock/pebble": "^0.46.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-scratchcard": "^1.1.2",
+    "react-scripts": "3.0.1",
+    "rxjs": "^6.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
