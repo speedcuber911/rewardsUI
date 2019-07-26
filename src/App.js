@@ -4,17 +4,39 @@ import "./App.css";
 import ScratchCard from "./scratchCard";
 import { Modal, colors } from "@anarock/pebble";
 import Scratch from "./scratchy";
+import trophy from "./trophy.png"
 
 class App extends React.PureComponent {
-  cardClicked = ({ amount, state }) => {      
-    this.setState({ modalVisible: true, scratchable: (state==="granted"), amount });
+  cardClicked = ({ amount, state, orderId }) => {
+    this.setState({
+      modalVisible: true,
+      scratchable: state === "granted",
+      amount,
+      currentCard: orderId
+    });
   };
   closeModal = _ => this.setState({ modalVisible: false });
   state = {
     modalVisible: false,
     cardData: null,
     scratchable: null,
-    amount: null
+    amount: null,
+    currentCard: null
+  };
+
+  handleScratched = () => {
+    console.log("handled");
+    this.setState({
+      cardData: [...this.state.cardData].map(cardData => {
+        if (cardData.orderId === this.state.currentCard) {
+          cardData.state = "granted";
+        }
+
+        return cardData;
+      }),
+      modalVisible: false
+    });
+    this.forceUpdate();
   };
   componentWillMount() {
     //fetch call to get array of cards;
@@ -38,10 +60,7 @@ class App extends React.PureComponent {
     return (
       <>
         <div className="App">
-          <ScratchCard
-            cardData={cardData}
-            handleClick={this.cardClicked}
-          />
+          <ScratchCard cardData={cardData} handleClick={this.cardClicked} />
         </div>
         <Modal visible={modalVisible}>
           <div
@@ -82,18 +101,25 @@ class App extends React.PureComponent {
                 height="300px"
                 width="37vh"
                 scratchable={this.state.scratchable}
+                handleScratched={this.handleScratched}
               >
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    flexDirection: "column",
                     background: colors.white.base,
                     height: "300px",
                     width: "37vh"
                   }}
                 >
-                  {`Congratulations, you've won ${this.state.amount}`}
+                  <div>
+                    <img src={trophy} width={120} height={120} />
+                  </div>
+                  <div>
+                    {`Congratulations, you've won ${this.state.amount}`}
+                  </div>
                 </div>
               </Scratch>
             </div>

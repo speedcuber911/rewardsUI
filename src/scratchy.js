@@ -12,6 +12,7 @@ class ScratchOff extends React.PureComponent {
     onReveal: noop
   };
 
+  intev = null;  
   constructor(props) {
     super(props);
     this.isDrawing = false;
@@ -100,6 +101,9 @@ class ScratchOff extends React.PureComponent {
 
   touchEnd(event) {
     this.isDrawing = false;
+    if(this.intev)
+      clearInterval(this.intev);
+    // this.intev = setTimeout(this.props.handleScratched,700);
   }
 
   render() {
